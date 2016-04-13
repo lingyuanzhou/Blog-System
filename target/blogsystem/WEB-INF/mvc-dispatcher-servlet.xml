@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--Controller package-->
+    <context:component-scan base-package="com.zhou.controller"/>
+
+    <!--Access to static resources(js, image and so on)-->
+    <!--<mvc:default-servlet-handler/>-->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <!--Enable annotation-->
+    <mvc:annotation-driven/>
+
+    <!--View resolver-->
+    <!--Used for view resolve of the Servelet and JSP -->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--JPA respository package-->
+    <jpa:repositories base-package="com.zhou.repository"/>
+
+    <!--Link to persistence.xml-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
+    </bean>
+
+    <!--Transaction Manager-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--Spring Security-->
+    <security:http auto-config="true">
+        <security:csrf disabled="true"/>
+        <security:intercept-url pattern="/login*" access="isAnonymous()"/>
+        <security:intercept-url pattern="/" access="hasRole('ADMIN') and hasRole('USER')"/>
+        <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
+        <security:intercept-url pattern="/user/**" access="hasRole('USER')"/>
+        <security:form-login login-page="/login" authentication-failure-url="/login?error" login-processing-url="/j_spring_security_check" authentication-success-handler-ref="authSuccessHandler"/>
+        <security:logout/>
+    </security:http>
+    
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:jdbc-user-service data-source-ref="securityDataSource"
+                                        users-by-username-query="SELECT nickname, password, 1 AS enabled FROM user WHERE nickname=?"
+                                        authorities-by-username-query="SELECT u.nickname, r.auth FROM user u, role r WHERE u.id=r.role_user_id AND u.nickname=?"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <bean id="securityDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/springdemo"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1991312"/>
+    </bean>
+
+    <bean id="authSuccessHandler" class="com.zhou.config.AuthSuccessHandler">
+        <property name="alwaysUseDefaultTargetUrl" value="true"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,112 @@
+.navbar-brand {
+    padding: 13px 15px;
+    font-size: 32px;
+}
+
+#infoTab {
+    margin-top: 60px;
+}
+
+/* Login Page*/
+#loginBody {
+    background-color: whitesmoke;
+}
+
+#login {
+    margin-top: 80px;
+    /*border-radius: 25px;*/
+    /*padding: 0;*/
+    /*background-color: white;*/
+    /*border-style: solid;*/
+    /*border-width: 3px;*/
+    /*border-color: #888888;*/
+    /*outline: none;*/
+    /*box-shadow: 0 0 10px #0066CC;*/
+}
+
+#login .panel-title {
+    margin: 5px;
+    color: #5bc0de;
+}
+
+#login label {
+    color: #5bc0de;
+}
+
+#login .panel-title .glyphicon-lock {
+    color: white;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+#login .form-control {
+    margin: 0;
+}
+
+/* User Page */
+#userBody {
+    background-color: whitesmoke;
+}
+
+#main {
+    width: 66%;
+}
+
+#userInfoPanel {
+    margin-top: 20px;
+    width: 100%;
+    height: 300px;
+    background: url("/resources/images/bg.jpeg");
+}
+
+#userInfo {
+    margin-top: 50px;
+}
+
+#userNav {
+    width: 100%;
+    background-color: white;
+}
+
+#userNav .nav-tabs {
+    text-align: center;
+    border: none;
+}
+
+#userNav .nav-tabs>li {
+    float: none;
+    display: inline-block;
+    padding: 0px 15px;
+}
+
+#userNav .nav-tabs>li>a {
+    display: inline-block;
+    margin-right: 14px;
+    letter-spacing: 3px;
+    text-decoration: none;
+    color: #b6b6b6;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 0;
+    background: transparent;
+    padding:5px 0;
+}
+
+#userNav .nav-tabs>li>a:hover,
+#userNav .nav-tabs>li.active>a,
+#userNav .nav-tabs>li.active>a:focus,
+#userNav .nav-tabs>li.active>a:hover {
+    border: 0;
+    border-bottom: solid 2px #000;
+    color: #333337;
+    background-color: transparent;
+}
+
+#userContent {
+    margin-top: 20px;
+    width: 100%;
+}
+
+#tabAbout {
+    background-color: white;
+}
